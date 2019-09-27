@@ -1,0 +1,23 @@
+<div *ngIf="todoListIsSuccess$ | async">
+  <div *ngIf="todoListIsLoaded$ | async; else displayTasks">
+    <mat-spinner></mat-spinner>
+  </div>
+  <ng-template #displayTasks>
+    <table id="tasks">
+      <tr>
+        <th>Status</th>
+        <th>Title</th>
+      </tr>
+      <tr *ngFor="let todo of todoList$ | async">
+        <td>
+          <mat-checkbox [checked]="todo.done">
+            {{ getTaskStatus(todo.done) }}
+          </mat-checkbox>
+        </td>
+        <td>{{todo.title}}</td>
+      </tr>
+    </table>
+
+    <h4>Tasks: {{ (todoList$ | async).length }}</h4>
+  </ng-template>
+</div>

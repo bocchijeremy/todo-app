@@ -1,0 +1,25 @@
+#tasks {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#tasks td, #tasks th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+
+#tasks tr:hover {background-color: #b6a9db;}
+
+#tasks th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #673ab7;
+  color: white;
+}
+
+mat-spinner {
+  margin: auto;
+}

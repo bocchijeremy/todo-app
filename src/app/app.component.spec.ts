@@ -1,11 +1,18 @@
-import { TestBed, async } from '@angular/core/testing';
-import { AppComponent } from './app.component';
+import {TestBed, async} from '@angular/core/testing';
+import {AppComponent} from './app.component';
+import {MaterialModule} from './modules/material/material.module';
+import {AppRoutingModule} from './modules/app-routing.module';
+import {ListTodoComponent} from './components/list-todo/list-todo.component';
+import {NavbarComponent} from './components/navbar/navbar.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [MaterialModule, AppRoutingModule],
       declarations: [
-        AppComponent
+        AppComponent,
+        ListTodoComponent,
+        NavbarComponent
       ],
     }).compileComponents();
   }));
@@ -16,16 +23,4 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'todo-app'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('todo-app');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('todo-app app is running!');
-  });
 });
