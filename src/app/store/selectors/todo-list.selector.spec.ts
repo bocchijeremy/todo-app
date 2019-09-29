@@ -6,7 +6,7 @@ import {ITodoListState} from '../reducers/todo-list.reducer';
 
 describe('TodoList Selectors', () => {
 
-  const expectedTasks: Array<ITask> = [
+  const mainExpectedTasks: Array<ITask> = [
     {
       id: 1,
       title: 'Fake data',
@@ -19,7 +19,7 @@ describe('TodoList Selectors', () => {
   const expectedSuccess = true;
 
   const iTodoListState: ITodoListState = {
-    tasks: expectedTasks,
+    tasks: mainExpectedTasks,
     loading: expectedLoading,
     success: expectedSuccess
   };
@@ -32,8 +32,96 @@ describe('TodoList Selectors', () => {
     expect(fromSelector.selectTodoState(iAppState)).toEqual(iTodoListState);
   });
 
-  it('should return tasks of ITodoListState', () => {
-    expect(fromSelector.selectTasks.projector(iTodoListState)).toEqual(expectedTasks);
+  it('should return tasks of ITodoListState with the first task on DONE status', () => {
+    const initTasks: Array<ITask> = [
+      {
+        id: 2,
+        title: 'Fake data 2',
+        done: true
+      },
+      {
+        id: 3,
+        title: 'Fake data 3',
+        done: true
+      },
+      {
+        id: 1,
+        title: 'Fake data',
+        done: false
+      }
+    ];
+
+    const iInitTodoListState: ITodoListState = {
+      tasks: initTasks,
+      loading: expectedLoading,
+      success: expectedSuccess
+    };
+
+    const expectedTasks: Array<ITask> = [
+      {
+        id: 1,
+        title: 'Fake data',
+        done: false
+      },
+      {
+        id: 2,
+        title: 'Fake data 2',
+        done: true
+      },
+      {
+        id: 3,
+        title: 'Fake data 3',
+        done: true
+      }
+    ];
+
+    expect(fromSelector.selectTasks.projector(iInitTodoListState)).toEqual(expectedTasks);
+  });
+
+  it('should return tasks of ITodoListState with the first task on UNDONE status', () => {
+    const initTasks: Array<ITask> = [
+      {
+        id: 2,
+        title: 'Fake data 2',
+        done: false
+      },
+      {
+        id: 3,
+        title: 'Fake data 3',
+        done: true
+      },
+      {
+        id: 1,
+        title: 'Fake data',
+        done: false
+      }
+    ];
+
+    const iInitTodoListState: ITodoListState = {
+      tasks: initTasks,
+      loading: expectedLoading,
+      success: expectedSuccess
+    };
+
+    const expectedTasks: Array<ITask> = [
+      {
+        id: 2,
+        title: 'Fake data 2',
+        done: false
+      },
+      {
+        id: 1,
+        title: 'Fake data',
+        done: false
+      },
+      {
+        id: 3,
+        title: 'Fake data 3',
+        done: true
+      }
+    ];
+
+    expect(fromSelector.selectTasks.projector(iInitTodoListState)).toEqual(expectedTasks);
   });
 
   it('should return the loading status of ITodoListState', () => {

@@ -9,12 +9,20 @@ export interface ITasksPayload {
 }
 
 /**
+ * IIdTaskPayload the payload of id task.
+ */
+export interface IIdTaskPayload {
+  payload: number;
+}
+
+/**
  * TodoListActionTypes the list of actions for TODOlist.
  */
 export enum TodoListActionTypes {
   LoadTodoList = '[TodoList] Load TodoList',
   todoListLoadedSuccess = '[TodoList] TodoList Loaded Success',
-  todoListLoadedError = '[TodoList] TodoList Loaded Error'
+  todoListLoadedError = '[TodoList] TodoList Loaded Error',
+  toggleTaskStatus = '[TodoList] TodoList toggle task status'
 }
 
 /**
@@ -36,4 +44,11 @@ export const todoListLoadedSuccessAction = createAction(
  */
 export const todoListLoadedErrorAction = createAction(
   TodoListActionTypes.todoListLoadedError
+);
+
+/**
+ * toggleTaskStatusAction the action to toggle the status of the task.
+ */
+export const toggleTaskStatusAction = createAction(
+  TodoListActionTypes.toggleTaskStatus, props<IIdTaskPayload>()
 );

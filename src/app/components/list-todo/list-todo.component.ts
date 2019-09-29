@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {Observable, Subject} from 'rxjs';
-import {loadTodoListAction} from '../../store/actions/todo-list.actions';
+import {IIdTaskPayload, loadTodoListAction, toggleTaskStatusAction} from '../../store/actions/todo-list.actions';
 import {selectTasks, isTodoListLoaded, isTodoListSuccess} from '../../store/selectors/todo-list.selector';
 import {ITask} from '../../models/ITask';
 import {IAppState} from '../../store/reducers/app.reducer';
@@ -65,4 +65,14 @@ export class ListTodoComponent implements OnInit, OnDestroy {
     this.isDestroy$.next();
   }
 
+  /**
+   * Update the status of task.
+   * @param id the id of task to update.
+   */
+  toggleStatus(id: number) {
+    const iIdTaskPayload: IIdTaskPayload = {
+      payload: id
+    };
+    this.store.dispatch(toggleTaskStatusAction(iIdTaskPayload));
+  }
 }
