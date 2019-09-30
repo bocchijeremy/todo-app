@@ -7,14 +7,20 @@
       <tr>
         <th>Status</th>
         <th>Title</th>
+        <th>Detail</th>
       </tr>
-      <tr *ngFor="let todo of todoList$ | async">
+      <tr *ngFor="let todo of todoList$ | async; trackBy: trackByFn">
         <td>
-          <mat-checkbox [checked]="todo.done" (change)="toggleStatus(todo.id)">
+          <mat-checkbox [checked]="todo.done" (change)="toggleStatus(todo)">
             {{ getTaskStatus(todo.done) }}
           </mat-checkbox>
         </td>
         <td [ngClass]="{ 'strikethrough': todo.done }">{{todo.title}}</td>
+        <td>
+          <a routerLink="task/{{todo.id}}">
+            Detail
+          </a>
+        </td>
       </tr>
     </table>
 

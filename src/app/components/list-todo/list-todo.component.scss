@@ -20,10 +20,15 @@
   color: white;
 }
 
-mat-spinner {
-  margin: auto;
-}
-
 .strikethrough {
   text-decoration: line-through;
+}
+
+a {
+  text-decoration:none;
+  color: black;
+}
+
+a:hover {
+  color: white;
 }

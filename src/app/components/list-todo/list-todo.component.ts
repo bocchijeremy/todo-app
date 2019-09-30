@@ -1,7 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {Observable, Subject} from 'rxjs';
-import {IIdTaskPayload, loadTodoListAction, toggleTaskStatusAction} from '../../store/actions/todo-list.actions';
+import {
+  ITaskPayload,
+  loadTodoListAction,
+  tryToggleTaskStatusAction
+} from '../../store/actions/todo-list.actions';
 import {selectTasks, isTodoListLoaded, isTodoListSuccess} from '../../store/selectors/todo-list.selector';
 import {ITask} from '../../models/ITask';
 import {IAppState} from '../../store/reducers/app.reducer';
@@ -27,7 +31,7 @@ export class ListTodoComponent implements OnInit, OnDestroy {
   /** The todoListIsLoaded$ Observable gets the status if Http request is success or not. */
   todoListIsSuccess$: Observable<boolean> = this.store.select(isTodoListSuccess);
 
-  /** The todoList$ Observable to get the list of the tasks. */
+  /** The Subject of component. */
   private isDestroy$ = new Subject();
 
   /**
@@ -44,6 +48,7 @@ export class ListTodoComponent implements OnInit, OnDestroy {
         });
       }
     });
+
   }
 
   ngOnInit() {
@@ -63,16 +68,27 @@ export class ListTodoComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy(): void {
     this.isDestroy$.next();
+    this.isDestroy$.complete();
   }
 
   /**
    * Update the status of task.
-   * @param id the id of task to update.
+   * @param task the task to update.
    */
-  toggleStatus(id: number) {
-    const iIdTaskPayload: IIdTaskPayload = {
-      payload: id
+  toggleStatus(task: ITask) {
+    const iTaskPayload: ITaskPayload = {
+      payload: task
     };
-    this.store.dispatch(toggleTaskStatusAction(iIdTaskPayload));
+    this.store.dispatch(tryToggleTaskStatusAction(iTaskPayload));
   }
+
+  /**
+   * Track the task in ngFor of todoList$ async.
+   * @param index the index of the task.
+   * @param task the task of TodoList.
+   */
+  trackByFn(index: number, task: ITask): number {
+    return task.id;
+  }
+
 }

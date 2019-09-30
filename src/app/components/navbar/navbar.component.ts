@@ -13,12 +13,6 @@ export class NavbarComponent implements OnInit {
   /** The main title of the navbar. */
   title = 'Todo application';
 
-  /**
-   * Constructor of NavbarComponent.
-   */
-  constructor() {
-  }
-
   ngOnInit() {
   }
 

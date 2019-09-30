@@ -1,11 +1,13 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ListTodoComponent} from './list-todo.component';
-import {MaterialModule} from '../../modules/material/material.module';
 import {Store} from '@ngrx/store';
 import {IAppState} from '../../store/reducers/app.reducer';
 import {MockStore, provideMockStore} from '@ngrx/store/testing';
 import {By} from '@angular/platform-browser';
+import {RouterTestingModule} from '@angular/router/testing';
+import {ListTodoModule} from './list-todo.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('ListTodoComponent', () => {
   let component: ListTodoComponent;
@@ -15,14 +17,20 @@ describe('ListTodoComponent', () => {
   const initialState: IAppState = {
     todoState: {
       tasks: [],
+      selectedTask: null,
       loading: false,
       success: true
-    }
+    },
+    router: null
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MaterialModule],
+      imports: [
+        BrowserAnimationsModule,
+        ListTodoModule,
+        RouterTestingModule
+      ],
       providers: [
         provideMockStore({initialState})
       ],
@@ -48,17 +56,21 @@ describe('ListTodoComponent', () => {
           {
             id: 1,
             title: 'TASK 1',
-            done: true
+            done: true,
+            description: ''
           },
           {
             id: 2,
             title: 'TASK 2',
-            done: false
+            done: false,
+            description: ''
           }
         ],
+        selectedTask: null,
         loading: false,
         success: true
-      }
+      },
+      router: null
     });
 
     fixture.detectChanges();
@@ -68,8 +80,8 @@ describe('ListTodoComponent', () => {
 
     expect(allTdTable[0].innerText).toEqual('Todo');
     expect(allTdTable[1].innerText).toEqual('TASK 2');
-    expect(allTdTable[2].innerText).toEqual('Done');
-    expect(allTdTable[3].innerText).toEqual('TASK 1');
+    expect(allTdTable[3].innerText).toEqual('Done');
+    expect(allTdTable[4].innerText).toEqual('TASK 1');
   });
 
   it('should render a updated tasks after toggle the status of task', async(() => {
@@ -79,22 +91,27 @@ describe('ListTodoComponent', () => {
           {
             id: 1,
             title: 'TASK 1',
-            done: false
+            done: false,
+            description: ''
           },
           {
             id: 2,
             title: 'TASK 2',
-            done: false
+            done: false,
+            description: ''
           },
           {
             id: 3,
             title: 'TASK 3',
-            done: true
+            done: true,
+            description: ''
           }
         ],
+        selectedTask: null,
         loading: false,
-        success: true
-      }
+        success: true,
+      },
+      router: null
     });
 
     fixture.detectChanges();
@@ -117,9 +134,11 @@ describe('ListTodoComponent', () => {
     store.setState({
       todoState: {
         tasks: [],
+        selectedTask: null,
         loading: false,
         success: false
-      }
+      },
+      router: null
     });
 
     fixture.detectChanges();

@@ -9,6 +9,13 @@ export interface ITasksPayload {
 }
 
 /**
+ * ITaskPayload the payload of ITask.
+ */
+export interface ITaskPayload {
+  payload: ITask;
+}
+
+/**
  * IIdTaskPayload the payload of id task.
  */
 export interface IIdTaskPayload {
@@ -22,7 +29,11 @@ export enum TodoListActionTypes {
   LoadTodoList = '[TodoList] Load TodoList',
   todoListLoadedSuccess = '[TodoList] TodoList Loaded Success',
   todoListLoadedError = '[TodoList] TodoList Loaded Error',
-  toggleTaskStatus = '[TodoList] TodoList toggle task status'
+  tryToggleTaskStatus = '[TodoList] TodoList try to toggle task status',
+  toggleTaskStatusSuccess = '[TodoList] TodoList toggle task status success',
+  loadTask = '[TodoList] TodoList load task',
+  taskLoadedSuccess = '[TodoList] TodoList task Loaded Success',
+  taskLoadedError = '[TodoList] TodoList task Loaded Error'
 }
 
 /**
@@ -47,8 +58,36 @@ export const todoListLoadedErrorAction = createAction(
 );
 
 /**
- * toggleTaskStatusAction the action to toggle the status of the task.
+ * tryToggleTaskStatusAction the action to try toggle the status of the task.
  */
-export const toggleTaskStatusAction = createAction(
-  TodoListActionTypes.toggleTaskStatus, props<IIdTaskPayload>()
+export const tryToggleTaskStatusAction = createAction(
+  TodoListActionTypes.tryToggleTaskStatus, props<ITaskPayload>()
+);
+
+/**
+ * toggleTaskStatusSuccessAction the action to toggle the status of the task.
+ */
+export const toggleTaskStatusSuccessAction = createAction(
+  TodoListActionTypes.toggleTaskStatusSuccess, props<IIdTaskPayload>()
+);
+
+/**
+ * loadTaskAction the action to initialize the loading of the task.
+ */
+export const loadTaskAction = createAction(
+  TodoListActionTypes.loadTask
+);
+
+/**
+ * taskLoadedSuccessAction the action to get the task when API backend is success.
+ */
+export const taskLoadedSuccessAction = createAction(
+  TodoListActionTypes.taskLoadedSuccess, props<ITaskPayload>()
+);
+
+/**
+ * taskLoadedErrorAction the action to get the task when API backend is error.
+ */
+export const taskLoadedErrorAction = createAction(
+  TodoListActionTypes.taskLoadedError
 );

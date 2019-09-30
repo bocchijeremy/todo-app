@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {NavbarComponent} from './navbar.component';
-import {MaterialModule} from '../../modules/material/material.module';
+import {NavbarModule} from './navbar.module';
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
@@ -9,8 +9,8 @@ describe('NavbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MaterialModule],
-      declarations: [NavbarComponent]
+      declarations: [NavbarComponent],
+      imports: [NavbarModule]
     })
       .compileComponents();
   }));

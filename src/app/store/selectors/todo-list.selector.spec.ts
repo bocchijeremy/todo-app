@@ -2,6 +2,8 @@ import * as fromSelector from './todo-list.selector';
 import {IAppState} from '../reducers/app.reducer';
 import {ITask} from '../../models/ITask';
 import {ITodoListState} from '../reducers/todo-list.reducer';
+import {IRouterStateUrl} from '../../route-serializer';
+import {RouterReducerState} from '@ngrx/router-store';
 
 
 describe('TodoList Selectors', () => {
@@ -10,7 +12,8 @@ describe('TodoList Selectors', () => {
     {
       id: 1,
       title: 'Fake data',
-      done: true
+      done: true,
+      description: ''
     }
   ];
 
@@ -20,16 +23,41 @@ describe('TodoList Selectors', () => {
 
   const iTodoListState: ITodoListState = {
     tasks: mainExpectedTasks,
+    selectedTask: null,
     loading: expectedLoading,
     success: expectedSuccess
   };
 
+  const router: IRouterStateUrl = {
+    url: 'test',
+    params: {
+      id: 1
+    },
+    queryParams: {
+      test: 'test'
+    }
+  };
+
+  const routerState: RouterReducerState<IRouterStateUrl> = {
+    state: router,
+    navigationId: 1
+  };
+
   const iAppState: IAppState = {
-    todoState: iTodoListState
+    todoState: iTodoListState,
+    router: routerState
   };
 
   it('should return the ITodoListState from IAppState', () => {
     expect(fromSelector.selectTodoState(iAppState)).toEqual(iTodoListState);
+  });
+
+  it('should return the RouterReducerState IRouterStateUrl from IAppState', () => {
+    expect(fromSelector.selectRouterState(iAppState)).toEqual(routerState);
+  });
+
+  it('should return the RouterReducerState IRouterStateUrl from IAppState', () => {
+    expect(fromSelector.selectRouter.projector(routerState)).toEqual(routerState);
   });
 
   it('should return tasks of ITodoListState with the first task on DONE status', () => {
@@ -37,22 +65,26 @@ describe('TodoList Selectors', () => {
       {
         id: 2,
         title: 'Fake data 2',
-        done: true
+        done: true,
+        description: ''
       },
       {
         id: 3,
         title: 'Fake data 3',
-        done: true
+        done: true,
+        description: ''
       },
       {
         id: 1,
         title: 'Fake data',
-        done: false
+        done: false,
+        description: ''
       }
     ];
 
     const iInitTodoListState: ITodoListState = {
       tasks: initTasks,
+      selectedTask: null,
       loading: expectedLoading,
       success: expectedSuccess
     };
@@ -61,17 +93,20 @@ describe('TodoList Selectors', () => {
       {
         id: 1,
         title: 'Fake data',
-        done: false
+        done: false,
+        description: ''
       },
       {
         id: 2,
         title: 'Fake data 2',
-        done: true
+        done: true,
+        description: ''
       },
       {
         id: 3,
         title: 'Fake data 3',
-        done: true
+        done: true,
+        description: ''
       }
     ];
 
@@ -83,22 +118,26 @@ describe('TodoList Selectors', () => {
       {
         id: 2,
         title: 'Fake data 2',
-        done: false
+        done: false,
+        description: ''
       },
       {
         id: 3,
         title: 'Fake data 3',
-        done: true
+        done: true,
+        description: ''
       },
       {
         id: 1,
         title: 'Fake data',
-        done: false
+        done: false,
+        description: ''
       }
     ];
 
     const iInitTodoListState: ITodoListState = {
       tasks: initTasks,
+      selectedTask: null,
       loading: expectedLoading,
       success: expectedSuccess
     };
@@ -107,17 +146,20 @@ describe('TodoList Selectors', () => {
       {
         id: 2,
         title: 'Fake data 2',
-        done: false
+        done: false,
+        description: ''
       },
       {
         id: 1,
         title: 'Fake data',
-        done: false
+        done: false,
+        description: ''
       },
       {
         id: 3,
         title: 'Fake data 3',
-        done: true
+        done: true,
+        description: ''
       }
     ];
 

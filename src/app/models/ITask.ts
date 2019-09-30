@@ -10,4 +10,7 @@ export interface ITask {
 
   /** the status of task. */
   done: boolean;
+
+  /** the description of task. */
+  description: string;
 }
