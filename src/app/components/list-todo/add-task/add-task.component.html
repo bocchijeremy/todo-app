@@ -1,0 +1,19 @@
+<div class="form-container">
+  <form (ngSubmit)="addTask()" [formGroup]="taskForm" class="form-task">
+    <h3>Add task:</h3>
+    <mat-form-field>
+      <input matInput formControlName="title" placeholder="Title">
+    </mat-form-field>
+
+    <mat-form-field>
+      <textarea formControlName="description" matInput placeholder="Description"></textarea>
+    </mat-form-field>
+
+    <div class="example-button-row">
+      <button mat-raised-button color="primary" type="submit" [disabled]="taskForm.invalid">OK</button>
+
+    </div>
+
+  </form>
+  <button mat-raised-button color="accent" id="cancelBtn" (click)="cancel()">Cancel</button>
+</div>

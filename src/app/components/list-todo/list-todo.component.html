@@ -3,6 +3,12 @@
     <mat-spinner></mat-spinner>
   </div>
   <ng-template #displayTasks>
+    <button mat-raised-button color="primary" (click)="showFormAddTask()" *ngIf="hideFormAddTask; else viewAddTask">Add Task</button>
+
+    <ng-template #viewAddTask>
+      <app-add-task (eventEmitterTask)="addTask($event)"></app-add-task>
+    </ng-template>
+
     <table id="tasks">
       <tr>
         <th>Status</th>

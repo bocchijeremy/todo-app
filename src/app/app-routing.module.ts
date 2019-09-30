@@ -6,7 +6,7 @@ import {DetailTodoComponent} from './components/list-todo/detail-todo/detail-tod
 /**
  * routes the routing of the app.
  */
-const routes: Routes = [
+export const routes: Routes = [
   {path: '', redirectTo: 'todo-list', pathMatch: 'full'},
   {path: 'todo-list', component: ListTodoComponent},
   {path: 'todo-list/task/:id', component: DetailTodoComponent}

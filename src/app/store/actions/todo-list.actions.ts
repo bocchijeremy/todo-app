@@ -22,18 +22,29 @@ export interface IIdTaskPayload {
   payload: number;
 }
 
+export interface IAddTaskPayload {
+  title: string;
+  description: string;
+}
+
 /**
  * TodoListActionTypes the list of actions for TODOlist.
  */
 export enum TodoListActionTypes {
+  // Load the tasks
   LoadTodoList = '[TodoList] Load TodoList',
   todoListLoadedSuccess = '[TodoList] TodoList Loaded Success',
   todoListLoadedError = '[TodoList] TodoList Loaded Error',
+  // Update the status of the task done/undone
   tryToggleTaskStatus = '[TodoList] TodoList try to toggle task status',
   toggleTaskStatusSuccess = '[TodoList] TodoList toggle task status success',
+  // Load only one task
   loadTask = '[TodoList] TodoList load task',
   taskLoadedSuccess = '[TodoList] TodoList task Loaded Success',
-  taskLoadedError = '[TodoList] TodoList task Loaded Error'
+  taskLoadedError = '[TodoList] TodoList task Loaded Error',
+  // Add task ACTION
+  tryAddTask = '[TodoList] TodoList try to add task',
+  taskAddedSuccess = '[TodoList] TodoList task added with Success',
 }
 
 /**
@@ -90,4 +101,18 @@ export const taskLoadedSuccessAction = createAction(
  */
 export const taskLoadedErrorAction = createAction(
   TodoListActionTypes.taskLoadedError
+);
+
+/**
+ * tryAddTaskAction the action to add task.
+ */
+export const tryAddTaskAction = createAction(
+  TodoListActionTypes.tryAddTask, props<IAddTaskPayload>()
+);
+
+/**
+ * taskAddedSuccessAction the action when task has been added with success.
+ */
+export const taskAddedSuccessAction = createAction(
+  TodoListActionTypes.taskAddedSuccess, props<ITaskPayload>()
 );

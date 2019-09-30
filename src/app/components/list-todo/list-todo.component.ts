@@ -1,16 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {Observable, Subject} from 'rxjs';
-import {
-  ITaskPayload,
-  loadTodoListAction,
-  tryToggleTaskStatusAction
-} from '../../store/actions/todo-list.actions';
-import {selectTasks, isTodoListLoaded, isTodoListSuccess} from '../../store/selectors/todo-list.selector';
+import {ITaskPayload, loadTodoListAction, tryAddTaskAction, tryToggleTaskStatusAction} from '../../store/actions/todo-list.actions';
+import {isTodoListLoaded, isTodoListSuccess, selectTasks} from '../../store/selectors/todo-list.selector';
 import {ITask} from '../../models/ITask';
 import {IAppState} from '../../store/reducers/app.reducer';
 import {MatSnackBar} from '@angular/material';
 import {takeUntil} from 'rxjs/operators';
+import {EventAddTask, EventEnumAddTask} from '../../models/EventAddTask';
 
 /**
  * The ListTodoComponent display the list of tasks to do or done.
@@ -30,6 +27,9 @@ export class ListTodoComponent implements OnInit, OnDestroy {
 
   /** The todoListIsLoaded$ Observable gets the status if Http request is success or not. */
   todoListIsSuccess$: Observable<boolean> = this.store.select(isTodoListSuccess);
+
+  /** The visibility of the TaskComponent. */
+  hideFormAddTask = true;
 
   /** The Subject of component. */
   private isDestroy$ = new Subject();
@@ -91,4 +91,22 @@ export class ListTodoComponent implements OnInit, OnDestroy {
     return task.id;
   }
 
+  /**
+   * Show the form to add a task.
+   */
+  showFormAddTask() {
+    this.hideFormAddTask = false;
+  }
+
+  /**
+   * Add the new task in the TODOlist or cancel the action.
+   * @param eventAddTask the event emitted by the AddTaskComponent.
+   */
+  addTask(eventAddTask: EventAddTask) {
+    if (eventAddTask.type === EventEnumAddTask.ADD_TASK) {
+      this.store.dispatch(tryAddTaskAction(eventAddTask.iAddTaskPayload));
+    }
+
+    this.hideFormAddTask = true;
+  }
 }

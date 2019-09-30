@@ -80,4 +80,23 @@ describe('TodoListService Http Client', () => {
     httpTestingController.verify();
   });
 
+  it('can test TodoListService.addTask', () => {
+    const titleValue = 'Create app ADD DATA TEST';
+    const descriptionValue = 'Description add';
+    const task: ITask = {
+      id: 1,
+      title: titleValue,
+      done: false,
+      description: descriptionValue
+    };
+
+    service.addTask(titleValue, descriptionValue).subscribe(t => expect(t).toEqual(task));
+
+    const req = httpTestingController.expectOne('api/tasks');
+    expect(req.request.method).toEqual('POST');
+    req.flush(task);
+
+    httpTestingController.verify();
+  });
+
 });

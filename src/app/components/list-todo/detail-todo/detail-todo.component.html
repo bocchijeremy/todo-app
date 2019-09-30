@@ -1,16 +1,16 @@
-<a routerLink="/todo-list">Home</a>
-<div *ngIf="(task$ | async)?.success">
-  <div *ngIf="(task$ | async)?.loading; else displayTask">
+<div *ngIf="statusTask$ | async">
+  <div *ngIf="loadingTask$ | async; else displayTask">
     <mat-spinner></mat-spinner>
   </div>
   <ng-template #displayTask>
+    <a routerLink="/todo-list">Home</a>
     <mat-card>
       <mat-card-header>
-        <mat-card-title>{{ (task$ | async)?.task?.title }}</mat-card-title>
+        <mat-card-title>{{ (task$ | async)?.title }}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <h3>Description:</h3>
-        <p>{{ (task$ | async)?.task?.description }}</p>
+        <p>{{ (task$ | async)?.description }}</p>
       </mat-card-content>
     </mat-card>
   </ng-template>

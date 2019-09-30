@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 
 import {DetailTodoComponent} from './detail-todo.component';
 import {Store} from '@ngrx/store';
@@ -6,10 +6,16 @@ import {IAppState} from '../../../store/reducers/app.reducer';
 import {MockStore, provideMockStore} from '@ngrx/store/testing';
 import {DetailTodoModule} from './detail-todo.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {RouterTestingModule} from '@angular/router/testing';
+import {routes} from '../../../app-routing.module';
+import {ListTodoModule} from '../list-todo.module';
+import {ListTodoComponent} from '../list-todo.component';
+import {Router} from '@angular/router';
 
 describe('DetailTodoComponent', () => {
   let component: DetailTodoComponent;
   let fixture: ComponentFixture<DetailTodoComponent>;
+  let router: Router;
 
   let store: MockStore<IAppState>;
   const initialState: IAppState = {
@@ -29,11 +35,14 @@ describe('DetailTodoComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        DetailTodoComponent
+        DetailTodoComponent,
+        ListTodoComponent
       ],
       imports: [
         BrowserAnimationsModule,
-        DetailTodoModule
+        DetailTodoModule,
+        ListTodoModule,
+        RouterTestingModule.withRoutes(routes)
       ],
       providers: [
         provideMockStore({initialState})
@@ -42,6 +51,7 @@ describe('DetailTodoComponent', () => {
       .compileComponents();
 
     store = TestBed.get<Store<IAppState>>(Store);
+    router = TestBed.get(Router);
 
     fixture = TestBed.createComponent(DetailTodoComponent);
     component = fixture.componentInstance;
@@ -52,7 +62,7 @@ describe('DetailTodoComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render an error message', () => {
+  it('should render an error message', fakeAsync(() => {
     store.setState({
       todoState: {
         tasks: [],
@@ -70,8 +80,9 @@ describe('DetailTodoComponent', () => {
     fixture.detectChanges();
 
     const element: ParentNode = fixture.nativeElement;
-    expect(element.children.length).toBe(1);
-    expect(element.querySelector('a').textContent).toBe('Home');
-  });
+    expect(element.children.length).toBe(0);
+    tick(6000);
+    expect('/todo-list').toEqual(router.url);
+  }));
 
 });

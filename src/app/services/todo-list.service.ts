@@ -50,4 +50,13 @@ export class TodoListService {
     );
   }
 
+  addTask(title: string, description: string): Observable<ITask> {
+    const task = {
+      title,
+      description,
+      done: false
+    };
+    return this.httpClient.post<ITask>(this.urlApi, task, cudOptions);
+  }
+
 }

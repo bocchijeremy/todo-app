@@ -41,19 +41,38 @@ export interface ITaskState {
  * @param tasks the initial tasks.
  * @param id the id of task to update.
  */
-function getUpdatesTasks(tasks: Array<ITask>, id: number) {
+const getUpdatesTasks = (tasks: Array<ITask>, id: number) => {
   const indexTaskToUpdate: number = tasks.findIndex((task: ITask) => task.id === id);
 
   tasks[indexTaskToUpdate] = {...tasks[indexTaskToUpdate], done: !tasks[indexTaskToUpdate].done};
   return tasks;
-}
+};
+
+/**
+ * Add a new task at the beginning of the tasks.
+ * @param tasks the initial tasks.
+ * @param task the task that we add at the beginning of the all tasks.
+ */
+const addTask = (tasks: Array<ITask>, task: ITask) => {
+  tasks.unshift(task);
+  return tasks;
+};
 
 /**
  * todoListReducer the reducers of ITodoListState.
  */
 export const todoListReducer = createReducer(
   initialTodoListState,
-  on(TodoListPageActions.loadTodoListAction, (state: ITodoListState) => ({...state, loading: true})),
+  on(TodoListPageActions.loadTodoListAction, (state: ITodoListState) => ({
+    ...state,
+    loading: true,
+    success: true,
+    selectedTask: {
+      task: null,
+      loading: false,
+      success: true,
+    }
+  })),
   on(TodoListPageActions.todoListLoadedSuccessAction, (state: ITodoListState, action: ITasksPayload) => (
     {...state, tasks: action.payload, loading: false, success: true}
   )),
@@ -86,5 +105,10 @@ export const todoListReducer = createReducer(
       loading: false,
       success: false
     }
+  })),
+  on(TodoListPageActions.tryAddTaskAction, (state) => ({...state})),
+  on(TodoListPageActions.taskAddedSuccessAction, (state: ITodoListState, newTask: ITaskPayload) => ({
+    ...state,
+    tasks: addTask(state.tasks, newTask.payload)
   }))
 );

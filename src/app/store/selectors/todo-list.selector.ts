@@ -39,7 +39,7 @@ export const selectTasks = createSelector(
  */
 export const selectSelectedTask = createSelector(
   selectTodoState,
-  (state: ITodoListState) => state.selectedTask
+  (state: ITodoListState) => state.selectedTask.task
 );
 
 /**
@@ -72,4 +72,12 @@ export const selectRouter = createSelector(
 export const selectSelectedTaskSuccess = createSelector(
   selectTodoState,
   (state) => state.selectedTask.success
+);
+
+/**
+ * selectSelectedTaskLoading selects the loading status of selectedTask.
+ */
+export const selectSelectedTaskLoading = createSelector(
+  selectTodoState,
+  (state) => state.selectedTask.loading
 );

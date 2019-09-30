@@ -2,13 +2,14 @@ import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {TodoListService} from '../../services/todo-list.service';
 import {
+  IAddTaskPayload,
   IIdTaskPayload,
   ITaskPayload,
   ITasksPayload,
   loadTaskAction,
-  loadTodoListAction, taskLoadedErrorAction, taskLoadedSuccessAction,
+  loadTodoListAction, taskAddedSuccessAction, taskLoadedErrorAction, taskLoadedSuccessAction,
   todoListLoadedErrorAction,
-  todoListLoadedSuccessAction, toggleTaskStatusSuccessAction, tryToggleTaskStatusAction
+  todoListLoadedSuccessAction, toggleTaskStatusSuccessAction, tryAddTaskAction, tryToggleTaskStatusAction
 } from '../actions/todo-list.actions';
 import {catchError, switchMap, withLatestFrom} from 'rxjs/operators';
 import {ITask} from '../../models/ITask';
@@ -60,6 +61,19 @@ export class TodoListEffects {
     )
   ));
 
+  addTodo$ = createEffect(() => this.actions$.pipe(
+    ofType(tryAddTaskAction),
+    switchMap((payload: IAddTaskPayload) => {
+      return this.todoListService.addTask(payload.title, payload.description);
+    }),
+    pipe(
+      switchMap((task) => {
+        const iTaskPayload: ITaskPayload = {payload: task};
+        return of(taskAddedSuccessAction(iTaskPayload));
+      })
+    )
+  ));
+
   /**
    * loadTask$ catches the action of loadTaskAction, then intercepts the router to get the id of the task. Then, we request the
    * backend with this id to retrieve the task.
@@ -80,9 +94,14 @@ export class TodoListEffects {
         const iTaskPayload: ITaskPayload = {payload: task};
         return of(taskLoadedSuccessAction(iTaskPayload));
       }),
-      catchError(() => of(taskLoadedErrorAction()))
+      catchError((err, caught) => {
+        this.store.dispatch(taskLoadedErrorAction());
+        return caught;
+        }
+      )
     )
-  ));
+    )
+  );
 
   /**
    * Constructor of TodoListEffects.

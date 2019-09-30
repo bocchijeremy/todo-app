@@ -1,0 +1,18 @@
+.form-task {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-task > * {
+  width: 100%;
+}
+
+#cancelBtn {
+  margin-top: 15px;
+}
+
+.form-container {
+  margin-top: 1%;
+  padding: 20px;
+  border: solid 1px black;
+}
